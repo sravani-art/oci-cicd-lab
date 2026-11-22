@@ -1,4 +1,5 @@
-name: Python Application CI
+
+name: Python Application CI-CD
 
 on:
   push:
@@ -6,6 +7,8 @@ on:
       - main
 
 jobs:
+
+  # JOB 1: Build and Test
   build-and-test:
     name: Build and Test
     runs-on: ubuntu-latest
@@ -29,4 +32,33 @@ jobs:
           python -m pytest -v
 
       - name: Build Successful
-        run: echo "Application build and tests completed successfully"
+        run: echo "CI completed successfully"
+
+  # JOB 2: Deploy to OCI
+  deploy:
+    name: Deploy to OCI VM
+    needs: build-and-test
+    runs-on: [self-hosted, Linux, X64, oci-vm]
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Deploy Application
+        run: |
+          echo "Starting deployment to OCI VM"
+
+          cp app.py requirements.txt /opt/myapp/
+
+          python3 -m venv /opt/myapp/venv
+
+          /opt/myapp/venv/bin/pip install -r /opt/myapp/requirements.txt
+
+          sudo /usr/bin/systemctl restart myapp.service
+
+          sleep 3
+
+          curl --fail http://localhost:8000/health
+
+          echo "Deployment completed successfully"
+
