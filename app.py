@@ -5,7 +5,7 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return """
-    <h1>Welcome to OCI CI/CD Lab!</h1>
+    <h1>Welcome to version 2 OCI CI/CD Lab!</h1>
     <h2>Application deployed successfully.</h2>
     <p>Deployment through GitHub Actions.</p>
     """
