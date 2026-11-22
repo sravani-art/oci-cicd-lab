@@ -38,7 +38,7 @@ jobs:
   deploy:
     name: Deploy to OCI VM
     needs: build-and-test
-    runs-on: [self-hosted, Linux, X64, oci-vm]
+    runs-on: [self-hosted, Linux, X64]
 
     steps:
       - name: Checkout Source Code
